@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SOA.Entities\SOA.Entities.csproj" />
+  </ItemGroup>
+
 </Project>
