@@ -8,6 +8,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SOA.Interfaces\SOA.Interfaces.csproj" />
+    <ProjectReference Include="..\SOA.Persistence\SOA.Persistence.csproj" />
+    <ProjectReference Include="..\SOA.Security\SOA.Security.csproj" />
+    <ProjectReference Include="..\SOA.Services\SOA.Services.csproj" />
   </ItemGroup>
 
 </Project>

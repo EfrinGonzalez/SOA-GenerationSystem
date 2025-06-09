@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SOA.DTOs;
 using SOA.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -28,3 +29,4 @@ namespace SOA.Queries
             return user is null ? null : new UserDto(user.Id, user.Email, user.IsActive, user.CreatedAt);
         }
     }
+}

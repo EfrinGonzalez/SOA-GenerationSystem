@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SOA.DTOs;
 using SOA.Interfaces;
 using System;
 using System.Collections.Generic;

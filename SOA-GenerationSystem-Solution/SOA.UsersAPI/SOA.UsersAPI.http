@@ -4,3 +4,13 @@ GET {{SOA.UsersAPI_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST {{SOA.UsersAPI_HostAddress}}/users/register
+Content-Type: application/json
+{
+  "email": "user1@example.com",
+  "password": "MyPass123!"
+}
+
+###
+

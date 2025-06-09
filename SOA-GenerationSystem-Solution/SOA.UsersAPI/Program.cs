@@ -1,10 +1,27 @@
+using SOA.Interfaces;
+using SOA.Persistence;
+using Microsoft.EntityFrameworkCore;
+using SOA.Services;
+using Microsoft.AspNetCore.Identity;
+using SOA.Security;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserAuthProviderRepository, UserAuthProviderRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
 
 var app = builder.Build();
 

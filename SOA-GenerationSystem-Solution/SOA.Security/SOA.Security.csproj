@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SOA.DTOs\SOA.DTOs.csproj" />
-    <ProjectReference Include="..\SOA.Entities\SOA.Entities.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="9.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SOA.Interfaces\SOA.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

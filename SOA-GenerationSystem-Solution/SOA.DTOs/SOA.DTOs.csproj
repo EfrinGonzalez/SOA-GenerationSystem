@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SOA.DTOs\SOA.DTOs.csproj" />
-    <ProjectReference Include="..\SOA.Entities\SOA.Entities.csproj" />
-  </ItemGroup>
-
 </Project>

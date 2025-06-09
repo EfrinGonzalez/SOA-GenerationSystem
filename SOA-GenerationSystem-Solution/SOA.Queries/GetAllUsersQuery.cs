@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SOA.DTOs;
 using SOA.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,7 @@ namespace SOA.Queries
 {
     public class GetAllUsersQuery : IRequest<IEnumerable<UserDto>> { }
 
-    //TODO: This DTO could be moved to a separate project or namespace for better organization.
-    public record UserDto(Guid Id, string Email, bool IsActive, DateTime CreatedAt);
+   
 
     public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IEnumerable<UserDto>>
     {
