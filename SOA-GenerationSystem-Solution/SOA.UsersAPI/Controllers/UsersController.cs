@@ -38,6 +38,7 @@ namespace SOA.UsersAPI.Controllers
         }*/
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
         {
             var result = await _mediator.Send(command);

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using SOA.Infrastructure;
 using SOA.Queries;
+using SOA.Factories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ builder.Services.AddScoped<IUserAuthProviderRepository, UserAuthProviderReposito
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IUserFactory, UserFactory>();
+
 
 builder.Services.AddScoped<IEventPublisher, RabbitMqEventPublisher>();
 

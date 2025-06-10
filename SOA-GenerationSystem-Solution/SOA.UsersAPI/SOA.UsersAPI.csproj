@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SOA.Commands\SOA.Commands.csproj" />
+    <ProjectReference Include="..\SOA.Factories\SOA.Factories.csproj" />
     <ProjectReference Include="..\SOA.Infrastructure\SOA.Infrastructure.csproj" />
     <ProjectReference Include="..\SOA.Interfaces\SOA.Interfaces.csproj" />
     <ProjectReference Include="..\SOA.Persistence\SOA.Persistence.csproj" />

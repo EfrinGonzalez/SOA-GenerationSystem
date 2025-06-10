@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SOA.Commands;
 using SOA.DTOs;
@@ -9,6 +10,7 @@ namespace SOA.UsersAPI.Controllers
 {
     [ApiController]
     [Route("admin/users")]
+    //[Authorize(Roles = "Admin")] //JWT authentication and authorization. Not setup in this PoC.
     public class AdminsController : ControllerBase
     {
         private readonly IUserService _userService;

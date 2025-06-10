@@ -1,12 +1,6 @@
 ﻿using MediatR;
 using SOA.DomainEvents;
-using SOA.Entities;
 using SOA.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SOA.Commands
 {
@@ -41,8 +35,6 @@ namespace SOA.Commands
 
             await _userRepository.UpdateAsync(user);
             await _unitOfWork.CommitAsync();
-
-//            await _eventPublisher.PublishAsync(new { user.Id, user.Email }, "user.updated");
             await _eventPublisher.PublishAsync(new UserUpdated(user.Id, user.Email ,user.IsActive), "user.updated");
 
             return true;

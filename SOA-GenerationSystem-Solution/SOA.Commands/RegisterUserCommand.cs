@@ -1,13 +1,8 @@
 ﻿using MediatR;
 using SOA.DomainEvents;
 using SOA.DTOs;
-using SOA.Entities;
 using SOA.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace SOA.Commands
 {
@@ -21,58 +16,37 @@ namespace SOA.Commands
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, UserDto>
     {
         private readonly IUserRepository _userRepository;
-       // private readonly ITenantRepository _tenantRepository;
-       // private readonly IRoleRepository _roleRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IEventPublisher _eventPublisher;
+        private readonly IUserFactory _userFactory;
+
 
         public RegisterUserCommandHandler(
-            IUserRepository userRepository,
-           //ITenantRepository tenantRepository,
-            //IRoleRepository roleRepository,
+            IUserRepository userRepository,     
             IUnitOfWork unitOfWork,
             IPasswordHasher passwordHasher,
-            IEventPublisher eventPublisher)
+            IEventPublisher eventPublisher,
+            IUserFactory userFactory)
         {
             _userRepository = userRepository;
-            //_tenantRepository = tenantRepository;
-            //_roleRepository = roleRepository;
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
             _eventPublisher = eventPublisher;
+            _userFactory = userFactory;
         }
 
         public async Task<UserDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
-        {
-         //   var tenant = await _tenantRepository.GetByIdAsync(request.TenantId);
-         //   if (tenant == null) throw new Exception("Invalid tenant ID");
-
+        {        
             var existingUser = await _userRepository.GetByEmailAsync(request.Email);
             if (existingUser != null) throw new Exception("Email already registered");
 
-            var hashedPassword = _passwordHasher.Hash(request.Password);
+            //var hashedPassword = _passwordHasher.Hash(request.Password);
 
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                TenantId = request.TenantId,
-                Email = request.Email,
-                PasswordHash = hashedPassword,
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow
-            };
-
-          /*  var defaultRole = await _roleRepository.GetByNameAsync("User");
-            if (defaultRole != null)
-            {
-                user.Roles.Add(new UserRole { UserId = user.Id, RoleId = defaultRole.Id });
-            }*/
+            var user = _userFactory.Create(request.TenantId, request.Email, request.Password);            
 
             await _userRepository.AddAsync(user);
             await _unitOfWork.CommitAsync();
-
-
             await _eventPublisher.PublishAsync(new UserSelfRegistered(user.Id, user.Email), "user.registered");
 
             return new UserDto(user.Id, user.Email, user.IsActive, user.CreatedAt);

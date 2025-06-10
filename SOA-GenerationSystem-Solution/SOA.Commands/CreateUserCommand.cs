@@ -1,12 +1,6 @@
 ﻿using MediatR;
 using SOA.DomainEvents;
-using SOA.Entities;
 using SOA.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SOA.Commands
 {
@@ -24,13 +18,16 @@ namespace SOA.Commands
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IEventPublisher _publisher;
+        private readonly IUserFactory _userFactory;
 
-        public CreateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher, IEventPublisher publisher)
+
+        public CreateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher, IEventPublisher publisher, IUserFactory userFactory)
         {
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
             _publisher = publisher;
+            _userFactory = userFactory;
         }
 
         public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -39,27 +36,13 @@ namespace SOA.Commands
             if (existing is not null)
                 throw new InvalidOperationException("Email is already in use.");
 
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                TenantId = request.TenantId,
-                Email = request.Email,
-                PasswordHash = _passwordHasher.Hash(request.Password),
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow
-            };
+            var user = _userFactory.Create(request.TenantId, request.Email, request.Password);
 
             await _userRepository.AddAsync(user);
             await _unitOfWork.CommitAsync();
-
-            //await _publisher.PublishAsync(new { user.Id, user.Email }, "user.created");
-
             await _publisher.PublishAsync(new UserCreatedByAdmin(user.Id, user.Email), "user.created");
 
             return user.Id;
         }
     }
-
-    //TODO: Maybe the events is a good idea to have somewhere else
-    //public record UserCreatedEvent(Guid UserId, string Email);
 }

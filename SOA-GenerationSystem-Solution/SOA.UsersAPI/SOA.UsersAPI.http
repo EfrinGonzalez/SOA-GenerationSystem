@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
  "tenantId": "11111111-1111-1111-1111-111111111111",
-  "email": "admin-created-user1@example.com",
+  "email": "admin-created-user3@example.com",
   "password": "MyPass123!"
 }
 
@@ -41,7 +41,7 @@ POST {{SOA.UsersAPI_HostAddress}}/users/register
 Content-Type: application/json
 {
   "tenantId": "11111111-1111-1111-1111-111111111111",
-  "email": "user6@example.com",
+  "email": "user7@example.com",
   "password": "MyPass123!"
 }
 
