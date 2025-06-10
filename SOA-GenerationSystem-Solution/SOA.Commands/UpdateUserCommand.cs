@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using SOA.DomainEvents;
+using SOA.Entities;
 using SOA.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,41 +12,40 @@ namespace SOA.Commands
 {
     public class UpdateUserCommand : IRequest<bool>
     {
-        public Guid Id { get; set; }
-        public string? Email { get; set; }
-        public bool? IsActive { get; set; }
+        public Guid UserId { get; set; }
+        public string Email { get; set; } = null!;
+        public bool IsActive { get; set; }
     }
 
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, bool>
     {
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IEventPublisher _publisher;
+        private readonly IEventPublisher _eventPublisher;
 
-        public UpdateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, IEventPublisher publisher)
+        public UpdateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, IEventPublisher eventPublisher)
         {
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
-            _publisher = publisher;
+            _eventPublisher = eventPublisher;
         }
 
         public async Task<bool> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.Id);
+            var user = await _userRepository.GetByIdAsync(request.UserId);
             if (user == null) return false;
 
-            if (request.Email != null)
-                user.Email = request.Email;
-            if (request.IsActive.HasValue)
-                user.IsActive = request.IsActive.Value;
+            user.Email = request.Email;
+            user.IsActive = request.IsActive;
+            user.CreatedAt = DateTime.UtcNow; 
 
             await _userRepository.UpdateAsync(user);
             await _unitOfWork.CommitAsync();
 
-            await _publisher.PublishAsync(new UserUpdatedEvent(user.Id, user.Email), "user.updated");
+//            await _eventPublisher.PublishAsync(new { user.Id, user.Email }, "user.updated");
+            await _eventPublisher.PublishAsync(new UserUpdated(user.Id, user.Email ,user.IsActive), "user.updated");
+
             return true;
         }
     }
-
-    public record UserUpdatedEvent(Guid UserId, string Email);
 }

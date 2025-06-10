@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SOA.DomainEvents;
 using SOA.Entities;
 using SOA.Interfaces;
 using System;
@@ -34,6 +35,10 @@ namespace SOA.Commands
 
         public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
+            var existing = await _userRepository.GetByEmailAsync(request.Email);
+            if (existing is not null)
+                throw new InvalidOperationException("Email is already in use.");
+
             var user = new User
             {
                 Id = Guid.NewGuid(),
@@ -47,11 +52,14 @@ namespace SOA.Commands
             await _userRepository.AddAsync(user);
             await _unitOfWork.CommitAsync();
 
-            await _publisher.PublishAsync(new UserCreatedEvent(user.Id, user.Email), "user.created");
+            //await _publisher.PublishAsync(new { user.Id, user.Email }, "user.created");
+
+            await _publisher.PublishAsync(new UserCreatedByAdmin(user.Id, user.Email), "user.created");
 
             return user.Id;
         }
     }
 
-    public record UserCreatedEvent(Guid UserId, string Email);
+    //TODO: Maybe the events is a good idea to have somewhere else
+    //public record UserCreatedEvent(Guid UserId, string Email);
 }

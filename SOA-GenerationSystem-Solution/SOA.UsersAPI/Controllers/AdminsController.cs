@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using SOA.Commands;
 using SOA.DTOs;
 using SOA.Interfaces;
+using SOA.Queries;
 
 namespace SOA.UsersAPI.Controllers
 {
@@ -9,35 +12,49 @@ namespace SOA.UsersAPI.Controllers
     public class AdminsController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IMediator _mediator;
 
-        public AdminsController(IUserService userService)
+        public AdminsController(IUserService userService, IMediator mediator)
         {
             _userService = userService;
+            _mediator = mediator;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateUserDto dto)
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {
-            var created = await _userService.CreateUserAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            var createdUserId = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetById), new { id = createdUserId }, new { id = createdUserId });
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll() =>
-            Ok(await _userService.GetAllAsync());
-
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var user = await _userService.GetByIdAsync(id);
-            return user == null ? NotFound() : Ok(user);
+            var result = await _mediator.Send(new GetUserByIdQuery { Id = id });
+            return result is null ? NotFound() : Ok(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpGet("get-all")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _mediator.Send(new GetAllUsersQuery());
+            return Ok(result);
+        }
+
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserCommand command)
+        {
+            // if (id != command.UserId) return BadRequest("Mismatched user ID");
+            command.UserId = id;
+            var result = await _mediator.Send(command);
+            return result ? NoContent() : NotFound();
+        }
+
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            await _userService.DeleteAsync(id);
-            return NoContent();
+            var result = await _mediator.Send(new DeleteUserCommand { UserId = id });
+            return result ? NoContent() : NotFound();
         }
     }
 

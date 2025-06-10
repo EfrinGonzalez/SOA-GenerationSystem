@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SOA.DomainEvents;
 using SOA.DTOs;
 using SOA.Entities;
 using SOA.Interfaces;
@@ -71,44 +72,10 @@ namespace SOA.Commands
             await _userRepository.AddAsync(user);
             await _unitOfWork.CommitAsync();
 
-            await _eventPublisher.PublishAsync(new { user.Id, user.Email }, "user.registered");
+
+            await _eventPublisher.PublishAsync(new UserSelfRegistered(user.Id, user.Email), "user.registered");
 
             return new UserDto(user.Id, user.Email, user.IsActive, user.CreatedAt);
         }
-    }
-    /*
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, UserDto>
-    {
-        private readonly IUserRepository _userRepository;
-        private readonly IPasswordHasher _passwordHasher;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public RegisterUserCommandHandler(
-            IUserRepository userRepository,
-            IPasswordHasher passwordHasher,
-            IUnitOfWork unitOfWork)
-        {
-            _userRepository = userRepository;
-            _passwordHasher = passwordHasher;
-            _unitOfWork = unitOfWork;
-        }
-
-        public async Task<UserDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
-        {
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                TenantId = request.TenantId,
-                Email = request.Email,
-                PasswordHash = _passwordHasher.Hash(request.Password),
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow
-            };
-
-            await _userRepository.AddAsync(user);
-            await _unitOfWork.CommitAsync();
-
-            return new UserDto(user.Id, user.Email, user.IsActive, user.CreatedAt);
-        }
-    }*/
+    }   
 }
