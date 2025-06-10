@@ -18,7 +18,6 @@ namespace SOA.Persistence
         public DbSet<Tenant> Tenants => Set<Tenant>();
         public DbSet<Role> Roles => Set<Role>();
         public DbSet<UserRole> UserRoles => Set<UserRole>();
-        public DbSet<UserAuthProvider> UserAuthProviders => Set<UserAuthProvider>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -55,20 +54,7 @@ namespace SOA.Persistence
 
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.Name).HasColumnName("name");
-            });
-
-            // == UserAuthProviders ==
-            modelBuilder.Entity<UserAuthProvider>(entity =>
-            {
-                entity.ToTable("user_auth_providers");
-                entity.HasKey(e => e.Id);
-
-                entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.UserId).HasColumnName("user_id");
-                entity.Property(e => e.ProviderName).HasColumnName("provider_name");
-                entity.Property(e => e.ExternalUserId).HasColumnName("external_user_id");
-                entity.Property(e => e.CreatedAt).HasColumnName("created_at");
-            });
+            });            
 
             // == UserRoles (composite key) ==
             modelBuilder.Entity<UserRole>(entity =>

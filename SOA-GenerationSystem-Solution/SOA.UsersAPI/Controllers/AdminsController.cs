@@ -13,12 +13,10 @@ namespace SOA.UsersAPI.Controllers
     //[Authorize(Roles = "Admin")] //JWT authentication and authorization. Not setup in this PoC.
     public class AdminsController : ControllerBase
     {
-        private readonly IUserService _userService;
         private readonly IMediator _mediator;
 
-        public AdminsController(IUserService userService, IMediator mediator)
+        public AdminsController(IMediator mediator)
         {
-            _userService = userService;
             _mediator = mediator;
         }
 
