@@ -8,9 +8,28 @@ Accept: application/json
 POST {{SOA.UsersAPI_HostAddress}}/users/register
 Content-Type: application/json
 {
-  "email": "user1@example.com",
+  "tenantId": "11111111-1111-1111-1111-111111111111",
+  "email": "user5@example.com",
   "password": "MyPass123!"
 }
 
 ###
 
+
+POST {{SOA.UsersAPI_HostAddress}}/users/register
+Content-Type: application/json
+
+{
+  //RegisterUserCommand
+}
+
+###
+
+POST {{SOA.UsersAPI_HostAddress}}/users/register
+Content-Type: application/json
+
+{
+  //RegisterUserCommand
+}
+
+###

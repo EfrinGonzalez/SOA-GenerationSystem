@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace SOA.DTOs
 {
-    public record RegisterUserDto(string Email, string Password);
+    public record RegisterUserDto(Guid TenantId, string Email, string Password);
 }

@@ -4,6 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using SOA.Services;
 using Microsoft.AspNetCore.Identity;
 using SOA.Security;
+using SOA.Commands;
+using MediatR;
+using System.Reflection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using SOA.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +24,19 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserAuthProviderRepository, UserAuthProviderRepository>();
+
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+builder.Services.AddScoped<IEventPublisher, RabbitMqEventPublisher>();
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommandHandler).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateUserCommand).Assembly));
+
+
+
 
 
 var app = builder.Build();

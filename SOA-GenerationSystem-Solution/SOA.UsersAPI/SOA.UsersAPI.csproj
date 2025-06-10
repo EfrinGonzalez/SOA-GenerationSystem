@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SOA.Commands\SOA.Commands.csproj" />
+    <ProjectReference Include="..\SOA.Infrastructure\SOA.Infrastructure.csproj" />
     <ProjectReference Include="..\SOA.Interfaces\SOA.Interfaces.csproj" />
     <ProjectReference Include="..\SOA.Persistence\SOA.Persistence.csproj" />
     <ProjectReference Include="..\SOA.Security\SOA.Security.csproj" />
