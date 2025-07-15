@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOA.Commands.Tests", "SOA.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOA.Queries.Tests", "SOA.Queries.Tests\SOA.Queries.Tests.csproj", "{7A544F54-A20C-4776-835A-62CA5BDCA22D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOA.IntegrationTests", "SOA.IntegrationTests\SOA.IntegrationTests.csproj", "{DBA6F218-E07C-4CE5-BB5E-5705C00076AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{7A544F54-A20C-4776-835A-62CA5BDCA22D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A544F54-A20C-4776-835A-62CA5BDCA22D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A544F54-A20C-4776-835A-62CA5BDCA22D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBA6F218-E07C-4CE5-BB5E-5705C00076AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBA6F218-E07C-4CE5-BB5E-5705C00076AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBA6F218-E07C-4CE5-BB5E-5705C00076AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBA6F218-E07C-4CE5-BB5E-5705C00076AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +130,7 @@ Global
 		{99FC826C-3557-44EB-A9D6-0032D84DA7B4} = {65F1B9BC-FDE4-45F9-88D6-52F290994F92}
 		{9FC86F2C-995D-444B-9F8C-C3A2AFB6188B} = {5851A117-76DF-4678-9A0B-C435348CAC94}
 		{7A544F54-A20C-4776-835A-62CA5BDCA22D} = {5851A117-76DF-4678-9A0B-C435348CAC94}
+		{DBA6F218-E07C-4CE5-BB5E-5705C00076AD} = {5851A117-76DF-4678-9A0B-C435348CAC94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F23138E1-047C-4B26-8AED-7A3F110806AE}

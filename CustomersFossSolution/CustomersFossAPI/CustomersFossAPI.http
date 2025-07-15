@@ -1,0 +1,23 @@
+@CustomersFossAPI_HostAddress = http://localhost:5256
+
+GET {{CustomersFossAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+POST {{CustomersFossAPI_HostAddress}}/customers/create
+Content-Type: application/json
+
+{
+  "name":"John Doe"
+}
+
+###
+
+GET {{CustomersFossAPI_HostAddress}}/customers/get-customers
+
+###
+
+GET {{CustomersFossAPI_HostAddress}}/customers/get/{431e5301-dd08-4b94-b391-dfc8bf27bc50}
+
+###
